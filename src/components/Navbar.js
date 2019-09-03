@@ -12,11 +12,11 @@ const Navbar = () => {
         return (
           <NavWrapper>
             <div className="nav-center">
-              <FaBars className="nav-icon" onclick={handleSidebar} />
+              <FaBars className="nav-icon" onClick={handleSidebar} />
               <img src={logo} alt="Gadgets Store" />
               <div className="nav-cart">
-                <FaCartPlus className="nav-icon" onclick={handleCart} />
-                <div className="cart-items">{cartItems}</div>
+                <FaCartPlus className="nav-icon" onClick={handleCart} />
+                <div className="cart-items"> {cartItems} </div>
               </div>
             </div>
           </NavWrapper>
