@@ -33,7 +33,7 @@ export default function Sidebar() {
 
 const SideWrapper = styled.nav`
   position: fixed;
-  top: 69px;
+  top: 72px;
   left: 0;
   width: 100%;
   height: 100%;
@@ -54,6 +54,7 @@ const SideWrapper = styled.nav`
     padding: 0.5rem 1.5rem;
     background: transparent;
     transition: var(--mainTransition);
+    text-decoration: none !important;
   }
   .sidebar-link:hover {
     background: var(--primaryColor);
