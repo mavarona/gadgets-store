@@ -1,11 +1,12 @@
 import React from "react";
-
-const AboutPage = () => {
+import Info from "../components/AboutPage/Info";
+import Hero from "../components/Hero";
+import aboutBcg from "../images/aboutBcg.jpeg";
+export default function AboutPage() {
   return (
     <>
-      <h1>Hello from AboutPage</h1>
+      <Hero img={aboutBcg} />
+      <Info />
     </>
   );
-};
-
-export default AboutPage;
+}
