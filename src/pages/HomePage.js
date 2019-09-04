@@ -1,9 +1,13 @@
 import React from "react";
+import Hero from "../components/Hero";
+import { Link } from "react-router-dom";
 
 const HomePage = () => {
   return (
     <>
-      <h1> Hello from HomePage </h1>
+      <Hero title="awesome gadgets" max="true">
+        <Link to="/products">our products</Link>
+      </Hero>
     </>
   );
 };
