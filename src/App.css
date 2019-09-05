@@ -58,3 +58,8 @@ body {
     height: 8rem;
     margin: 0.5rem;
 }
+
+input[type="submit"] {
+    background: var(--primaryColor);
+    color: var(--mainWhite);
+}
