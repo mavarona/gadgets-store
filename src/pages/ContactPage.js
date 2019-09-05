@@ -1,11 +1,12 @@
 import React from "react";
-
-const ContactPage = () => {
+import Hero from "../components/Hero";
+import contactImg from "../images/contactBcg.jpeg";
+import Contact from "../components/ContactPage/Contact";
+export default function ContactPage() {
   return (
     <>
-      <h1> Hello from ContactPage </h1>
+      <Hero img={contactImg} />
+      <Contact />
     </>
   );
-};
-
-export default ContactPage;
+}
