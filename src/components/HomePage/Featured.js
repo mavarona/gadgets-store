@@ -1,6 +1,5 @@
 import React from "react";
 import Product from "../Product";
-import { Link } from "react-router-dom";
 import Title from "../Title";
 import { ProductConsumer } from "../../context";
 
