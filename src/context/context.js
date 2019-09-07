@@ -62,11 +62,17 @@ class ProductProvider extends Component {
     };
 
     getStorageCart = () => {
-        return [];
+        let cart;
+        if (localStorage.getItem('cart')) {
+            cart = JSON.parse(localStorage.getItem('cart'));
+        } else {
+            cart = [];
+        }
+        return cart;
     };
 
     getStorageProduct = () => {
-        return {};
+        return localStorage.getItem('singleProduct') ? JSON.parse(localStorage.getItem('singleProduct')) : {};
     };
 
     getTotals = () => {
@@ -99,7 +105,9 @@ class ProductProvider extends Component {
         });
     };
 
-    syncStorage = () => {};
+    syncStorage = () => {
+        localStorage.setItem('cart', JSON.stringify(this.state.cart));
+    };
 
     addToCart = id => {
         let tmpCart = [...this.state.cart];
@@ -131,7 +139,14 @@ class ProductProvider extends Component {
     };
 
     setSingleProduct = id => {
-        console.log(`Single Product ${id}`);
+        let product = this.state.storeProducts.find(item => item.id === id);
+        localStorage.setItem('singleProduct', JSON.stringify(product));
+        this.setState({
+            singleProduct: {
+                ...product
+            },
+            loading: false
+        })
     };
 
     handleSidebar = () => {
