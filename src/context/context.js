@@ -56,6 +56,8 @@ class ProductProvider extends Component {
             cart: this.getStorageCart(),
             singleProduct: this.getStorageProduct(),
             loading: false
+        }, () => {
+            this.addTotals()
         });
     };
 
@@ -67,14 +69,65 @@ class ProductProvider extends Component {
         return {};
     };
 
-    getTotals = () => {};
+    getTotals = () => {
+        let subTotal = 0;
+        let cartItems = 0;
+        this.state.cart.forEach(item => {
+            subTotal += item.total;
+            cartItems += item.count;
+        });
+        subTotal = parseFloat(subTotal.toFixed(2));
+        let tax = subTotal * 0.2;
+        tax = parseFloat(tax.toFixed(2));
+        let total = subTotal + tax;
+        total = parseFloat(total.toFixed(2));
+        return {
+            cartItems,
+            subTotal,
+            tax,
+            total
+        }
+    };
 
-    addTotals = () => {};
+    addTotals = () => {
+        const totals = this.getTotals();
+        this.setState({
+            cartItems: totals.cartItems,
+            cartSubTotal: totals.subTotal,
+            cartTax: totals.tax,
+            cartTotal: totals.total
+        });
+    };
 
     syncStorage = () => {};
 
     addToCart = id => {
-        console.log(id);
+        let tmpCart = [...this.state.cart];
+        let tmpProducts = [...this.state.storeProducts];
+        let tmpItem = tmpCart.find(item => item.id === id);
+        if (!tmpItem) {
+            tmpItem = tmpProducts.find(item => item.id === id);
+            let total = tmpItem.price;
+            let cartItem = {
+                ...tmpItem,
+                count: 1,
+                total
+            };
+            tmpCart = [...tmpCart, cartItem];
+        } else {
+            tmpItem.count++;
+            tmpItem.total = tmpItem.price * tmpItem.count;
+            tmpItem.total = parseInt(tmpItem.total.toFixed(2));
+        }
+        this.setState(() => {
+            return {
+                cart: tmpCart
+            }
+        }, () => {
+            this.addTotals();
+            this.syncStorage();
+            this.openCart();
+        });
     };
 
     setSingleProduct = id => {
