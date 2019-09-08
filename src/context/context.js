@@ -171,6 +171,22 @@ class ProductProvider extends Component {
     });
   };
 
+  increment = id => {
+    console.log(id);
+  };
+
+  decrement = id => {
+    console.log(id);
+  };
+
+  removeItem = id => {
+    console.log(id);
+  };
+
+  cleanCart = () => {
+    console.log("Clear Cart");
+  };
+
   render() {
     return (
       <ProductContext.Provider
@@ -181,7 +197,11 @@ class ProductProvider extends Component {
           closeCart: this.closeCart,
           openCart: this.openCart,
           addToCart: this.addToCart,
-          setSingleProduct: this.setSingleProduct
+          setSingleProduct: this.setSingleProduct,
+          increment: this.increment,
+          decrement: this.decrement,
+          removeItem: this.removeItem,
+          cleanCart: this.cleanCart
         }}
       >
         {" "}
