@@ -1,6 +1,6 @@
 import React from "react";
 import "./App.css";
-import "bootstrap/dist/css/bootstrap-grid.min.css";
+import "bootstrap/dist/css/bootstrap.min.css";
 
 import About from "./pages/AboutPage";
 import Cart from "./pages/CartPage";
@@ -15,25 +15,59 @@ import Sidebar from "./components/Sidebar";
 import Sidecart from "./components/Sidecart";
 import Footer from "./components/Footer";
 
-import { Route, Switch } from "react-router-dom";
+import {
+    Route,
+    Switch
+} from "react-router-dom";
 
 function App() {
-  return (
-    <>
-      <Navbar />
-      <Sidebar />
-      <Sidecart />
-      <Switch>
-        <Route path="/" exact component={Home} />
-        <Route path="/about" component={About} />
-        <Route path="/contact" component={Contact} />
-        <Route path="/products" exact component={Products} />
-        <Route path="/products/:id" component={SingleProduct} />
-        <Route path="/cart" component={Cart} /> <Route component={Default} />
-      </Switch>
-      <Footer />
-    </>
-  );
+    return ( <
+        >
+        <
+        Navbar / >
+        <
+        Sidebar / >
+        <
+        Sidecart / >
+        <
+        Switch >
+        <
+        Route path = "/"
+        exact component = {
+            Home
+        }
+        /> <
+        Route path = "/about"
+        component = {
+            About
+        }
+        /> <
+        Route path = "/contact"
+        component = {
+            Contact
+        }
+        /> <
+        Route path = "/products"
+        exact component = {
+            Products
+        }
+        /> <
+        Route path = "/products/:id"
+        component = {
+            SingleProduct
+        }
+        /> <
+        Route path = "/cart"
+        component = {
+            Cart
+        }
+        /> <Route component={Default} / >
+        <
+        /Switch> <
+        Footer / >
+        <
+        />
+    );
 }
 
 export default App;
