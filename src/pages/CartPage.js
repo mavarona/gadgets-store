@@ -3,11 +3,11 @@ import Hero from "../components/Hero";
 import cartBcg from "../images/storeBcg.jpeg";
 import CartSection from "../components/CartPage";
 
-const CartPage = () => {
+const CartPage = (props) => {
   return (
     <>
       <Hero img={cartBcg} />
-      <CartSection />
+      <CartSection history={props.history}/>
     </>
   );
 };
