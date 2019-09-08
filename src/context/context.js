@@ -204,8 +204,7 @@ class ProductProvider extends Component {
           cleanCart: this.cleanCart
         }}
       >
-        {" "}
-        {this.props.children}{" "}
+        {this.props.children}
       </ProductContext.Provider>
     );
   }
