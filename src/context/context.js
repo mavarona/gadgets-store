@@ -1,10 +1,12 @@
 import React, { Component } from "react";
 import { linkData } from "./linkData";
 import { socialData } from "./socialData";
-import { items } from "./productData";
+//import { items } from "./productData";
+import { client } from "./contentful";
 
 const ProductContext = React.createContext();
-
+//Provider
+//Consumer
 class ProductProvider extends Component {
   state = {
     sidebarOpen: false,
@@ -15,7 +17,7 @@ class ProductProvider extends Component {
     cartItems: 0,
     cartSubTotal: 0,
     cartTax: 0,
-    cartTotal: 0,
+    carTotal: 0,
     storeProducts: [],
     filteredProducts: [],
     featuredProducts: [],
@@ -28,10 +30,17 @@ class ProductProvider extends Component {
     company: "all",
     shipping: false
   };
-
   componentDidMount() {
-    this.setProducts(items);
+    //this.setProducts(items);
+    client
+      .getEntries({
+        content_type: "gadgetsStore"
+      })
+      .then(response => this.setProducts(response.items))
+      .catch(err => console.log(err));
   }
+
+  //set products
 
   setProducts = products => {
     let storeProducts = products.map(item => {
@@ -44,9 +53,11 @@ class ProductProvider extends Component {
       };
       return product;
     });
+    //  featured products
     let featuredProducts = storeProducts.filter(item => item.featured === true);
-    let maxPrice = Math.max(...storeProducts.map(item=>item.price));
-    console.log(maxPrice);
+    // get max price
+    let maxPrice = Math.max(...storeProducts.map(item => item.price));
+
     this.setState(
       {
         storeProducts,
@@ -63,7 +74,7 @@ class ProductProvider extends Component {
       }
     );
   };
-
+  // get cart from local storage
   getStorageCart = () => {
     let cart;
     if (localStorage.getItem("cart")) {
@@ -73,13 +84,13 @@ class ProductProvider extends Component {
     }
     return cart;
   };
-
+  // get product from local storage
   getStorageProduct = () => {
     return localStorage.getItem("singleProduct")
       ? JSON.parse(localStorage.getItem("singleProduct"))
       : {};
   };
-
+  // get totals
   getTotals = () => {
     let subTotal = 0;
     let cartItems = 0;
@@ -87,6 +98,7 @@ class ProductProvider extends Component {
       subTotal += item.total;
       cartItems += item.count;
     });
+
     subTotal = parseFloat(subTotal.toFixed(2));
     let tax = subTotal * 0.2;
     tax = parseFloat(tax.toFixed(2));
@@ -99,7 +111,7 @@ class ProductProvider extends Component {
       total
     };
   };
-
+  //add totals
   addTotals = () => {
     const totals = this.getTotals();
     this.setState({
@@ -109,33 +121,33 @@ class ProductProvider extends Component {
       cartTotal: totals.total
     });
   };
-
+  // sync storage
   syncStorage = () => {
     localStorage.setItem("cart", JSON.stringify(this.state.cart));
   };
-
+  //add to cart
   addToCart = id => {
-    let tmpCart = [...this.state.cart];
-    let tmpProducts = [...this.state.storeProducts];
-    let tmpItem = tmpCart.find(item => item.id === id);
-    if (!tmpItem) {
-      tmpItem = tmpProducts.find(item => item.id === id);
-      let total = tmpItem.price;
+    let tempCart = [...this.state.cart];
+    let tempProducts = [...this.state.storeProducts];
+    let tempItem = tempCart.find(item => item.id === id);
+    if (!tempItem) {
+      tempItem = tempProducts.find(item => item.id === id);
+      let total = tempItem.price;
       let cartItem = {
-        ...tmpItem,
+        ...tempItem,
         count: 1,
         total
       };
-      tmpCart = [...tmpCart, cartItem];
+      tempCart = [...tempCart, cartItem];
     } else {
-      tmpItem.count++;
-      tmpItem.total = tmpItem.price * tmpItem.count;
-      tmpItem.total = parseInt(tmpItem.total.toFixed(2));
+      tempItem.count++;
+      tempItem.total = tempItem.price * tempItem.count;
+      tempItem.total = parseFloat(tempItem.total.toFixed(2));
     }
     this.setState(
       () => {
         return {
-          cart: tmpCart
+          cart: tempCart
         };
       },
       () => {
@@ -145,7 +157,7 @@ class ProductProvider extends Component {
       }
     );
   };
-
+  // set single product
   setSingleProduct = id => {
     let product = this.state.storeProducts.find(item => item.id === id);
     localStorage.setItem("singleProduct", JSON.stringify(product));
@@ -157,40 +169,42 @@ class ProductProvider extends Component {
     });
   };
 
+  // handle sidebar
   handleSidebar = () => {
     this.setState({
       sidebarOpen: !this.state.sidebarOpen
     });
   };
-
+  // hanldle sart
   handleCart = () => {
     this.setState({
       cartOpen: !this.state.cartOpen
     });
   };
-
+  //close cart
   closeCart = () => {
     this.setState({
       cartOpen: false
     });
   };
-
+  // open
   openCart = () => {
     this.setState({
       cartOpen: true
     });
   };
-
+  //  cart functionality
+  // increment
   increment = id => {
-    let tmpCart = [...this.state.cart];
-    const cartItem = tmpCart.find(item => item.id === id);
+    let tempCart = [...this.state.cart];
+    const cartItem = tempCart.find(item => item.id === id);
     cartItem.count++;
     cartItem.total = cartItem.count * cartItem.price;
     cartItem.total = parseFloat(cartItem.total.toFixed(2));
     this.setState(
       () => {
         return {
-          cart: [...tmpCart]
+          cart: [...tempCart]
         };
       },
       () => {
@@ -199,7 +213,7 @@ class ProductProvider extends Component {
       }
     );
   };
-
+  // decrement
   decrement = id => {
     let tempCart = [...this.state.cart];
     const cartItem = tempCart.find(item => item.id === id);
@@ -223,15 +237,13 @@ class ProductProvider extends Component {
       );
     }
   };
-
+  // removeItem
   removeItem = id => {
-    let tmpCart = [...this.state.cart];
-    tmpCart = tmpCart.filter(item => item.id !== id);
+    let tempCart = [...this.state.cart];
+    tempCart = tempCart.filter(item => item.id !== id);
     this.setState(
-      () => {
-        return {
-          cart: [...tmpCart]
-        };
+      {
+        cart: [...tempCart]
       },
       () => {
         this.addTotals();
@@ -239,14 +251,10 @@ class ProductProvider extends Component {
       }
     );
   };
-
   clearCart = () => {
-    console.log("clear cart");
     this.setState(
-      () => {
-        return {
-          cart: []
-        };
+      {
+        cart: []
       },
       () => {
         this.addTotals();
@@ -254,16 +262,21 @@ class ProductProvider extends Component {
       }
     );
   };
-
-  handleChange = e => {
-      const name = e.target.name;
-      const value = e.target.type === 'checkbox'? e.target.checked: e.target.value;
-      this.setState({
-        [name]:value
-      }, this.sortData);
+  //handle filtering
+  handleChange = event => {
+    const name = event.target.name;
+    const value =
+      event.target.type === "checkbox"
+        ? event.target.checked
+        : event.target.value;
+    this.setState(
+      {
+        [name]: value
+      },
+      this.sortData
+    );
   };
-
-  sortData = () =>{
+  sortData = () => {
     const { storeProducts, price, company, shipping, search } = this.state;
 
     let tempPrice = parseInt(price);
@@ -290,7 +303,7 @@ class ProductProvider extends Component {
     this.setState({
       filteredProducts: tempProducts
     });
-  }
+  };
 
   render() {
     return (
@@ -310,7 +323,8 @@ class ProductProvider extends Component {
           handleChange: this.handleChange
         }}
       >
-        {this.props.children}
+        {" "}
+        {this.props.children}{" "}
       </ProductContext.Provider>
     );
   }

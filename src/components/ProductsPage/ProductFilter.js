@@ -29,7 +29,7 @@ export default function ProductFilter() {
               <FilterWrapper>
                 {/* text search */}
                 <div>
-                  <label htmlFor="search">search products</label>
+                  <label htmlFor="search"> search products </label>
                   <input
                     type="text"
                     name="search"
@@ -39,10 +39,9 @@ export default function ProductFilter() {
                     className="filter-item"
                   />
                 </div>
-                {/*end of text search */}
-                {/* category search */}
+                {/*end of text search */} {/* category search */}
                 <div>
-                  <label htmlFor="company">company</label>
+                  <label htmlFor="company"> company </label>
                   <select
                     name="company"
                     id="company"
@@ -51,8 +50,8 @@ export default function ProductFilter() {
                     className="filter-item"
                   >
                     {/* <option value="all">all</option>
-                    <option value="fuji">fuji</option>
-                    <option value="htc">htc</option> */}
+                                <option value="fuji">fuji</option>
+                                <option value="htc">htc</option> */}
                     {companies.map((company, index) => {
                       return (
                         <option key={index} value={company}>
@@ -62,12 +61,11 @@ export default function ProductFilter() {
                     })}
                   </select>
                 </div>
-                {/* end of category search */}
-                {/* price range */}
+                {/* end of category search */} {/* price range */}
                 <div>
                   <label htmlFor="price">
                     <p className="mb-2">
-                      product price : <span> {price}€</span>
+                      product price: <span> {price}€ </span>
                     </p>
                   </label>
                   <input
@@ -81,8 +79,7 @@ export default function ProductFilter() {
                     onChange={handleChange}
                   />
                 </div>
-                {/* end of  price range */}
-                {/* free shippping */}
+                {/* end of  price range */} {/* free shippping */}
                 <div>
                   <label htmlFor="shipping" className="mx-2">
                     free shipping
@@ -95,7 +92,6 @@ export default function ProductFilter() {
                     checked={shipping && true}
                   />
                 </div>
-
                 {/* end of free shippping */}
               </FilterWrapper>
             </div>
